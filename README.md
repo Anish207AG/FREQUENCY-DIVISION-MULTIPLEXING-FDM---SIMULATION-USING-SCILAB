@@ -31,19 +31,20 @@ To generate multiple message signals, multiplex them using AM-FDM, and recover e
 6. Plot original messages, FDM signal and recovered signals.
 # PROGRM
 ```scilab
+
 clc; clear; close;
 fs=80000; N=floor(0.05*fs); t=(0:N-1)/fs;
-fm=[420 430 445 455 465 475];
-fc=[4200 4350 4450 4550 4650 4750];
-Am=[5.6 5.7 5.8 5.9 6.0 6.1];
-Ac=[11.2 11.4 11.6 11.8 12.0 12.2];
+fm=[435 445 455 465 475 485];
+fc=[4350 4450 4550 4650 4750 4850];
+Am=[5.4 5.5 5.6 5.7 5.8 5.9];
+Ac=[10.8 11.0 11.2 11.4 11.6 11.8];
 num=length(fm);
 for i=1:num
-    m(i,:)=Am(i)*sin(2*%pi*fm(i)*t);
+    m(i,:)=Am(i)sin(2%pi*fm(i)*t);
 end
 fdm=zeros(1,N);
 for i=1:num
-    fdm = fdm + Ac(i)*cos(2*%pi*fc(i)*t).*m(i,:);
+    fdm = fdm + Ac(i)cos(2%pi*fc(i)*t).*m(i,:);
 end
 function h=FIR(fc1,fc2,fs,M,mode)
     n=-M:M; L=length(n);
@@ -63,7 +64,7 @@ M=300;
 for i=1:num
     bp=FIR(fc(i)-600,fc(i)+600,fs,M,2);
     iso=conv(fdm,bp,"same");
-    mix=iso.*cos(2*%pi*fc(i)*t);
+    mix=iso.cos(2%pi*fc(i)*t);
     lp=FIR(800,0,fs,M,1);
     demod(i,:)= (2/Ac(i))*conv(mix,lp,"same");
 end
